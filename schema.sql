@@ -71,12 +71,44 @@ CREATE TABLE vets (
         CONSTRAINT fk_specializations_species FOREIGN KEY (species_id) REFERENCES species(id),
         CONSTRAINT fk_specializations_vets FOREIGN KEY (vets_id) REFERENCES vets(id) );
 
-        CREATE TABLE visits (
-        animals_id INT NOT NULL,
-        vets_id INT NOT NULL,
-        date_of_visit DATE NOT NULL,
-        PRIMARY KEY(animals_id, vets_id, date_of_visit),
-        CONSTRAINT fk_visit_animals FOREIGN KEY (animals_id) REFERENCES animals(id),
-        CONSTRAINT fk_visit_vets FOREIGN KEY (vets_id) REFERENCES vets(id) );
 
+    CREATE TABLE visits (
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    animal_id INT NOT NULL,
+    vet_id INT NOT NULL,
+    date_of_visit DATE NOT NULL,
+    CONSTRAINT fk_animals FOREIGN KEY (animal_id) REFERENCES animals(id),
+    CONSTRAINT fk_vets FOREIGN KEY (vet_id) REFERENCES vets(id)
+);
+
+EXPLAIN ANALYZE SELECT COUNT(*) FROM visits where animal_id = 4;
+EXPLAIN ANALYZE SELECT * FROM visits where vet_id = 2;
+EXPLAIN ANALYZE SELECT * FROM owners where email = 'owner_18327@mail.com';
+
+INSERT INTO visits (animal_id, vet_id, date_of_visit) 
+VALUES (1, 1, '2020-05-24'),
+(1, 3, '2020-07-22'),
+(3, 2, '2020-01-05'),
+(3, 2, '2020-03-08'),
+(3, 2, '2020-05-14'),
+(4, 3, '2021-05-04'),
+(5, 4, '2021-02-24'),
+(6, 2, '2019-12-21'),
+(6, 1, '2020-07-10'),
+(6, 2, '2021-04-07'),
+(7, 3, '2019-09-29'),
+(8, 4, '2020-10-03'),
+(8, 4, '2020-11-04'),
+(9, 2, '2019-01-24'),
+(9, 2, '2019-05-15'),
+(9, 2, '2020-02-27'),
+(9, 2, '2020-07-03'),
+(10, 3, '2020-05-24'),
+(10, 1, '2021-01-11');
+
+CREATE INDEX animal_index ON visits (animal_id);
+
+CREATE INDEX vet_index ON visits (vet_id);
+
+CREATE INDEX email_index ON owners (email);
 
