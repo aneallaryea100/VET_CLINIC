@@ -78,3 +78,5 @@ CREATE TABLE vets (
         PRIMARY KEY(animals_id, vets_id, date_of_visit),
         CONSTRAINT fk_visit_animals FOREIGN KEY (animals_id) REFERENCES animals(id),
         CONSTRAINT fk_visit_vets FOREIGN KEY (vets_id) REFERENCES vets(id) );
+
+
